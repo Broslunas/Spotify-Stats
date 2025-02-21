@@ -60,23 +60,24 @@
           })
           .catch(console.error);
   
-        fetch(`https://api.broslunas.com/spotify/currently-playing?access_token=${accessToken}`)
-          .then(res => res.json())
-          .then(data => {
-            if (data.is_playing && data.item) {
-              currentlyPlayingSection.style.display = 'block';
-              nowPlayingInfo.innerHTML = `
-                <img src="${data.item.album.images[0]?.url || ''}" alt="Cover">
-                <div class="np-info">
-                  <p style="margin: 0; font-weight: bold;">${data.item.name}</p>
-                  <p style="margin: 0; color: #b3b3b3;">${data.item.artists[0].name}</p>
-                </div>
-              `;
-            } else {
-              currentlyPlayingSection.style.display = 'none';
-            }
-          })
-          .catch(() => currentlyPlayingSection.style.display = 'none');
+                fetch(`https://api.broslunas.com/spotify/currently-playing?access_token=${accessToken}`)
+                  .then(res => res.json())
+                  .then(data => {
+                    if (data.is_playing && data.item) {
+                      currentlyPlayingSection.style.display = 'block';
+                      let artists = data.item.artists.map(artist => artist.name).join(' • ');
+                      nowPlayingInfo.innerHTML = `
+                        <img src="${data.item.album.images[0]?.url || ''}" alt="Cover">
+                        <div class="np-info">
+                          <p style="margin: 0; font-weight: bold;">${data.item.name}</p>
+                          <p style="margin: 0; color: #b3b3b3;">${artists}</p>
+                        </div>
+                      `;
+                    } else {
+                      currentlyPlayingSection.style.display = 'none';
+                    }
+                  })
+                  .catch(() => currentlyPlayingSection.style.display = 'none');
   
         fetch(`https://api.broslunas.com/spotify/top-tracks?access_token=${accessToken}`)
           .then(res => res.json())
@@ -91,9 +92,11 @@
                 div.className = 'item';
                 const imgSrc = track.album.images[0]?.url || '';
                 div.innerHTML = `
+                  <a href="${track.external_urls.spotify}" target="_blank">
                   <img src="${imgSrc}" alt="Track">
                   <div class="title" title="${track.name}">${track.name}</div>
                   <div class="subtitle" title="${track.artists[0].name}">${track.artists[0].name}</div>
+                  <a/>
                 `;
                 tracksItems.appendChild(div);
               });
@@ -114,8 +117,10 @@
                 div.className = 'item';
                 const imgSrc = (artist.images && artist.images.length) ? artist.images[0].url : 'https://via.placeholder.com/150';
                 div.innerHTML = `
+                  <a href="${artist.external_urls.spotify}" target="_blank">
                   <img src="${imgSrc}" alt="Artist">
                   <div class="title" title="${artist.name}">${artist.name}</div>
+                  <a/>
                 `;
                 artistsItems.appendChild(div);
               });
