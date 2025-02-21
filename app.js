@@ -1,12 +1,9 @@
-
-    // Función para obtener parámetros de la URL
     function getQueryParam(param) {
         const params = new URLSearchParams(window.location.search);
         return params.get(param);
       }
       const accessToken = getQueryParam('access_token');
-  
-      // Elementos del DOM
+
       const loginDiv = document.getElementById('login');
       const topBar = document.getElementById('topBar');
       const userImg = document.getElementById('userImg');
@@ -29,7 +26,6 @@
       const genresSlider = document.getElementById('genresSlider');
       const genresItems = document.getElementById('genresItems');
   
-      // Botones slider
       const tracksLeftBtn = document.getElementById('tracksLeft');
       const tracksRightBtn = document.getElementById('tracksRight');
       const artistsLeftBtn = document.getElementById('artistsLeft');
@@ -37,12 +33,10 @@
       const genresLeftBtn = document.getElementById('genresLeft');
       const genresRightBtn = document.getElementById('genresRight');
   
-      // Cerrar sesión: recarga sin token
       logoutBtn.addEventListener('click', () => {
         window.location.href = '/';
       });
   
-      // Función para desplazar el slider
       function slide(container, amount) {
         container.scrollBy({ left: amount, behavior: 'smooth' });
       }
@@ -56,9 +50,8 @@
       if (accessToken) {
         loginDiv.style.display = 'none';
         topBar.style.display = 'flex';
-        timeRangeNote.style.display = 'block'; // Mostrar el aviso de período
+        timeRangeNote.style.display = 'block';
   
-        // 1. Obtener perfil del usuario
         fetch(`https://api.broslunas.com/spotify/profile?access_token=${accessToken}`)
           .then(res => res.json())
           .then(data => {
@@ -67,7 +60,6 @@
           })
           .catch(console.error);
   
-        // 2. Ahora reproduciendo (mejorado)
         fetch(`https://api.broslunas.com/spotify/currently-playing?access_token=${accessToken}`)
           .then(res => res.json())
           .then(data => {
@@ -86,7 +78,6 @@
           })
           .catch(() => currentlyPlayingSection.style.display = 'none');
   
-        // 3. Obtener canciones más escuchadas y armar slider
         fetch(`https://api.broslunas.com/spotify/top-tracks?access_token=${accessToken}`)
           .then(res => res.json())
           .then(data => {
@@ -110,7 +101,6 @@
           })
           .catch(console.error);
   
-        // 4. Obtener artistas más escuchados y armar slider
         fetch(`https://api.broslunas.com/spotify/top-artists?access_token=${accessToken}`)
           .then(res => res.json())
           .then(data => {
@@ -129,7 +119,6 @@
                 `;
                 artistsItems.appendChild(div);
               });
-              // Calcular géneros a partir de los artistas
               const genreCounts = {};
               artists.forEach(artist => {
                 artist.genres.forEach(genre => {
