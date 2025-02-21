@@ -59,7 +59,7 @@
         timeRangeNote.style.display = 'block'; // Mostrar el aviso de período
   
         // 1. Obtener perfil del usuario
-        fetch(`/api/spotify/profile?access_token=${accessToken}`)
+        fetch(`https://api.broslunas.com/spotify/profile?access_token=${accessToken}`)
           .then(res => res.json())
           .then(data => {
             userImg.src = (data.images && data.images.length) ? data.images[0].url : 'https://via.placeholder.com/50';
