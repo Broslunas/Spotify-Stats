@@ -60,7 +60,7 @@
         timeRangeNote.style.display = 'block'; // Mostrar el aviso de período
   
         // 1. Obtener perfil del usuario
-        fetch(`/profile?access_token=${accessToken}`)
+        fetch(`https://api.broslunas.com/spotify/profile?access_token=${accessToken}`)
           .then(res => res.json())
           .then(data => {
             userImg.src = (data.images && data.images.length) ? data.images[0].url : 'https://via.placeholder.com/50';
@@ -69,7 +69,7 @@
           .catch(console.error);
   
         // 2. Ahora reproduciendo (mejorado)
-        fetch(`/currently-playing?access_token=${accessToken}`)
+        fetch(`https://api.broslunas.com/spotify/currently-playing?access_token=${accessToken}`)
           .then(res => res.json())
           .then(data => {
             if (data.is_playing && data.item) {
@@ -88,7 +88,7 @@
           .catch(() => currentlyPlayingSection.style.display = 'none');
   
         // 3. Obtener canciones más escuchadas y armar slider
-        fetch(`/top-tracks?access_token=${accessToken}`)
+        fetch(`https://api.broslunas.com/spotify/top-tracks?access_token=${accessToken}`)
           .then(res => res.json())
           .then(data => {
             const tracks = data.items || [];
@@ -112,7 +112,7 @@
           .catch(console.error);
   
         // 4. Obtener artistas más escuchados y armar slider
-        fetch(`/top-artists?access_token=${accessToken}`)
+        fetch(`https://api.broslunas.com/spotify/top-artists?access_token=${accessToken}`)
           .then(res => res.json())
           .then(data => {
             const artists = data.items || [];
