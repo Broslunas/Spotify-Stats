@@ -54,13 +54,12 @@
       genresRightBtn.addEventListener('click', () => slide(genresItems, 150));
   
       if (accessToken) {
-        // Ocultar login y mostrar barra superior
         loginDiv.style.display = 'none';
         topBar.style.display = 'flex';
         timeRangeNote.style.display = 'block'; // Mostrar el aviso de período
   
         // 1. Obtener perfil del usuario
-        fetch(`https://api.broslunas.com/spotify/profile?access_token=${accessToken}`)
+        fetch(`/api/spotify/profile?access_token=${accessToken}`)
           .then(res => res.json())
           .then(data => {
             userImg.src = (data.images && data.images.length) ? data.images[0].url : 'https://via.placeholder.com/50';
