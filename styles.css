@@ -1,131 +1,195 @@
 body {
-    background-color: #121212;
-    color: #FFFFFF;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
+  background-color: #121212;
+  color: #FFFFFF;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  padding: 0 1rem;
+}
+.top-bar {
+  display: flex;
+  align-items: center;
+  background-color: #181818;
+  padding: 1rem;
+  flex-wrap: wrap;
+}
+.user-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+.username {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+.logout-btn {
+  margin-left: auto;
+}
+.time-range-note {
+  text-align: center;
+  margin: 0.5rem;
+  font-size: 0.9rem;
+  color: #b3b3b3;
+  display: none;
+}
+.section-title {
+  margin: 1.5rem 1rem 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.now-playing-card {
+  display: flex;
+  align-items: center;
+  background-color: #1e1e1e;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  margin: 1rem;
+}
+.now-playing-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  margin-right: 1rem;
+}
+.np-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.slider-container {
+  position: relative;
+  margin: 1rem;
+}
+.slider-items {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 1rem;
+  padding: 0 2rem;
+}
+.slider-items::-webkit-scrollbar {
+  display: none;
+}
+.slider-items {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 10;
+}
+.slider-btn.left {
+  left: 0;
+}
+.slider-btn.right {
+  right: 0;
+}
+.item {
+  width: 150px;
+  flex-shrink: 0;
+  text-align: center;
+}
+.item img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+.item.no-img > div {
+  width: 150px;
+  height: 150px;
+  background-color: #1e1e1e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+.item .title, .item .subtitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.item .title {
+  font-size: 0.95rem;
+}
+.item .subtitle {
+  font-size: 0.85rem;
+  color: #b3b3b3;
+}
+/* Ajustes específicos para la sección de géneros */
+#genresItems {
+gap: 5px; /* 5px de separación entre los items */
+padding: 0 5px; /* 5px de espacio a los costados */
+}
+#genresItems .item.no-img > div {
+  width: 120px;    /* Ajusta el ancho a 120px (puedes modificarlo a tu gusto) */
+  height: 60px;    /* Altura de 60px para dar forma rectangular */
+  background-color: #1e1e1e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 5px;        /* 5px de padding alrededor del contenido */
+  margin: 0;           /* Se utiliza el gap para la separación entre items */
+  font-size: 1rem;
+}
+
+.footer {
+  background-color: #181818;
+  padding: 1rem;
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #b3b3b3;
+}
+
+/* Media queries para dispositivos móviles */
+@media (max-width: 768px) {
   .top-bar {
-    display: flex;
+    flex-direction: column;
     align-items: center;
-    background-color: #181818;
-    padding: 1rem;
-  }
-  .user-img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 1rem;
-  }
-  .username {
-    font-size: 1.3rem;
-    font-weight: bold;
   }
   .logout-btn {
-    margin-left: auto;
-  }
-  .time-range-note {
-    text-align: center;
-    margin: 0.5rem;
-    font-size: 0.9rem;
-    color: #b3b3b3;
-    display: none;
-  }
-  .section-title {
-    margin: 1.5rem 1rem 0.5rem;
-    font-size: 1.2rem;
-    font-weight: bold;
+    margin-left: 0;
+    margin-top: 0.5rem;
   }
   .now-playing-card {
-    display: flex;
-    align-items: center;
-    background-color: #1e1e1e;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    margin: 1rem;
-  }
-  .now-playing-card img {
-    width: 80px;
-    height: 80px;
-    border-radius: 8px;
-    margin-right: 1rem;
-  }
-  .np-info {
-    display: flex;
     flex-direction: column;
-    justify-content: center;
-  }
-  .slider-container {
-    position: relative;
-    margin: 1rem;
-  }
-  .slider-items {
-    display: flex;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    gap: 1rem;
-    padding: 0 2rem;
-  }
-  .slider-items::-webkit-scrollbar {
-    display: none;
-  }
-  .slider-items {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .slider-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
-    border: none;
-    color: #fff;
-    font-size: 2rem;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    z-index: 10;
-  }
-  .slider-btn.left {
-    left: 0;
-  }
-  .slider-btn.right {
-    right: 0;
-  }
-  .item {
-    width: 150px;
-    flex-shrink: 0;
     text-align: center;
   }
-  .item img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
+  .now-playing-card img {
+    margin: 0 0 0.5rem 0;
   }
-  .item.no-img > div {
-    width: 150px;
-    height: 150px;
-    background-color: #1e1e1e;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-    font-size: 1.2rem;
+  .slider-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 1.5rem;
   }
-  .item .title, .item .subtitle {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .item {
+    width: 120px;
   }
-  .item .title {
-    font-size: 0.95rem;
+  .slider-items {
+    padding: 0 1rem;
   }
-  .item .subtitle {
-    font-size: 0.85rem;
-    color: #b3b3b3;
-  }
+  .footer {
+  padding: 0.8rem;
+  font-size: 0.85rem;
+}
+}
