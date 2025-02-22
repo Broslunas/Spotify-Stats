@@ -103,7 +103,7 @@
             }
           })
           .catch(console.error);
-          
+
           fetch(`https://api.broslunas.com/spotify/recently-played?access_token=${accessToken}`)
           .then(res => res.json())
           .then(data => {
@@ -184,4 +184,12 @@
             }
           })
           .catch(console.error);
+
+          if (accessToken) {
+            document.getElementById('verMasTopTracks').href = `/more/?type=top-tracks&access_token=${accessToken}`;
+            document.getElementById('verMasTopArtists').href = `/more/?type=top-artists&access_token=${accessToken}`;
+            document.getElementById('verMasGenres').href = `/more/?type=genres&access_token=${accessToken}`;
+            document.getElementById('verMasRecentlyPlayed').href = `/more/?type=recently-played&access_token=${accessToken}`;
+          }
+          
       }
