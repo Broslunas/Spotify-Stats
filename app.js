@@ -103,7 +103,43 @@
             }
           })
           .catch(console.error);
-  
+          
+          fetch(`https://api.broslunas.com/spotify/recently-played?access_token=${accessToken}`)
+          .then(res => res.json())
+          .then(data => {
+            const recentTracks = data.items || [];
+            if (recentTracks.length) {
+              const recentTitle = document.getElementById('recentTitle');
+              const recentSlider = document.getElementById('recentSlider');
+              const recentItems = document.getElementById('recentItems');
+              recentTitle.style.display = 'block';
+              recentSlider.style.display = 'block';
+              recentItems.innerHTML = '';
+              recentTracks.slice(0, 20).forEach(item => {
+                const track = item.track;
+                const div = document.createElement('div');
+                div.className = 'item';
+                const imgSrc = track.album.images[0]?.url || '';
+                div.innerHTML = `
+                  <a href="${track.external_urls.spotify}" target="_blank">
+                    <img src="${imgSrc}" alt="Track">
+                    <div class="title" title="${track.name}">${track.name}</div>
+                    <div class="subtitle" title="${track.artists[0].name}">${track.artists[0].name}</div>
+                  </a>
+                `;
+                recentItems.appendChild(div);
+              });
+            }
+          })
+          .catch(console.error);
+
+          // Controles para el slider de las últimas canciones
+          const recentLeftBtn = document.getElementById('recentLeft');
+          const recentRightBtn = document.getElementById('recentRight');
+
+          recentLeftBtn.addEventListener('click', () => slide(document.getElementById('recentItems'), -150));
+          recentRightBtn.addEventListener('click', () => slide(document.getElementById('recentItems'), 150));
+
         fetch(`https://api.broslunas.com/spotify/top-artists?access_token=${accessToken}`)
           .then(res => res.json())
           .then(data => {
