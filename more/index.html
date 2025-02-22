@@ -38,11 +38,11 @@
 
     // Configurar el botón de volver y el enlace del navbar
     if (accessToken) {
-      document.getElementById('backButton').href = `/index.html?access_token=${accessToken}`;
-      document.getElementById('homeLink').href = `/index.html?access_token=${accessToken}`;
+      document.getElementById('backButton').href = `/?access_token=${accessToken}`;
+      document.getElementById('homeLink').href = `/?access_token=${accessToken}`;
     } else {
-      document.getElementById('backButton').href = `/index.html`;
-      document.getElementById('homeLink').href = `/index.html`;
+      document.getElementById('backButton').href = `/`;
+      document.getElementById('homeLink').href = `/`;
     }
 
     const pageTitle = document.getElementById('pageTitle');
