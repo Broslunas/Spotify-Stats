@@ -7,7 +7,8 @@ body {
   padding: 0;
 }
 .container {
-  padding: 0 1rem;
+  margin: 20px auto;
+  max-width: 1200px;
 }
 .top-bar {
   display: flex;
@@ -161,6 +162,56 @@ padding: 0 5px; /* 5px de espacio a los costados */
   color: #b3b3b3;
 }
 
+#recentList {
+  list-style: none;
+  padding: 0;
+  margin: 20px;  /* Márgenes en todos los bordes */
+}
+
+.recent-item {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.recent-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.recent-item .track-name {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.recent-item .track-artists {
+  font-size: 0.9rem;
+  color: #b3b3b3;
+}
+
+.recent-item .track-played-at {
+  font-size: 0.8rem;
+  color: #b3b3b3;
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* Título de la sección */
+#recentListTitle {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
 /* Media queries para dispositivos móviles */
 @media (max-width: 768px) {
   .top-bar {
@@ -192,5 +243,13 @@ padding: 0 5px; /* 5px de espacio a los costados */
   .footer {
   padding: 0.8rem;
   font-size: 0.85rem;
-}
+  }
+  .recent-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .recent-item .track-played-at {
+    margin-top: 5px;
+    text-align: left;
+  }
 }
