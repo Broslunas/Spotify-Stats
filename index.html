@@ -18,44 +18,39 @@
       <img src="https://cdn.broslunas.com/icon/spotify.png" alt="Spotify Logo" style="width: 20px; height: 20px; margin-right: 8px;">
       Iniciar sesión con Spotify</a>
   </div>
-
   <div class="top-bar" id="topBar" style="display: none;">
     <img src="" alt="User" class="user-img" id="userImg">
     <div class="username" id="userName"></div>
-    <button class="btn btn-info logout-btn" id="logoutBtn">Cerrar sesión</button>
+    <button class="btn btn-danger logout-btn" id="logoutBtn">Cerrar sesión</button>
   </div>
-
   <div id="timeRangeNote" class="time-range-note">Datos de las últimas 4 semanas</div>
-
   <div id="currentlyPlayingSection" style="display: none;">
     <h2 class="section-title">Ahora reproduciendo</h2>
-    <div>
-      <div class="now-playing-card" id="nowPlayingInfo"></div>
-      
+    <div class="now-playing-card" id="nowPlayingInfo"></div>
+  </div>
   <div id="playbackControls" style="display: none;">
     <div id="playbackControls-2" style="text-align: center; margin: 1rem; gap: 10px;" class="np-card d-flex justify-content-center align-items-center">
       <button id="prevBtn" class="np-controls btn btn-icon">
         <i style="color: white" class="fas fa-step-backward"></i>
       </button>
+      <button id="playPauseBtn" class="btn btn-icon">
+        <i id="playPauseIcon" style="color: white" class="fas fa-play"></i>
+      </button>      
       <button id="nextBtn" class="np-controls btn btn-icon">
         <i style="color: white" class="fas fa-step-forward"></i>
       </button>
     </div>
   </div>
-    </div>
-  </div>
-
   <h2 class="section-title" id="tracksTitle" style="display: none;">Tus canciones más escuchadas</h2>
   <div class="text-center mb-3">
     <a id="verMasTopTracks" class="btn btn-link" style="display:none;">Ver más</a>
-  </div> 
+  </div>
   <div class="slider-container" id="tracksSlider" style="display: none;">
     <button class="slider-btn left" id="tracksLeft">&lt;</button>
     <div class="slider-items" id="tracksItems">
     </div>
     <button class="slider-btn right" id="tracksRight">&gt;</button>
   </div>
-
   <h2 class="section-title" id="artistsTitle" style="display: none;">Tus artistas más escuchados</h2>
   <div class="text-center mb-3">
     <a id="verMasTopArtists" class="btn btn-link" style="display:none;">Ver más</a>
@@ -66,7 +61,6 @@
     </div>
     <button class="slider-btn right" id="artistsRight">&gt;</button>
   </div>
-
   <h2 class="section-title" id="genresTitle" style="display: none;">Tus géneros más escuchados</h2>
   <div class="text-center mb-3">
     <a id="verMasGenres" class="btn btn-link" style="display:none;">Ver más</a>
@@ -77,19 +71,18 @@
     </div>
     <button class="slider-btn right" id="genresRight">&gt;</button>
   </div>
-
   <h2 class="section-title" id="recentPlayedTitle" style="display:none;">Últimas canciones reproducidas</h2>
   <ul id="recentList" style="display:none; list-style:none; padding:0;">
   </ul>
-
   <footer class="footer">
     <div class="container">
       <p class="text-center">Broslunas Stats 2025 &copy; Todos los derechos reservados</p>
     </div>
   </footer>
-  
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
   <script src="/app.js"></script>
 </body>
+<style>
+</style>
 </html>
