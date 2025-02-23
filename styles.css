@@ -134,24 +134,22 @@ body {
   font-size: 0.85rem;
   color: #b3b3b3;
 }
-/* Ajustes específicos para la sección de géneros */
 #genresItems {
-gap: 5px; /* 5px de separación entre los items */
-padding: 0 5px; /* 5px de espacio a los costados */
+  gap: 5px;
+  padding: 0 5px;
 }
 #genresItems .item.no-img > div {
-  width: 120px;    /* Ajusta el ancho a 120px (puedes modificarlo a tu gusto) */
-  height: 60px;    /* Altura de 60px para dar forma rectangular */
+  width: 120px;
+  height: 60px;
   background-color: #1e1e1e;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px; /* Bordes redondeados */
-  padding: 5px;        /* 5px de padding alrededor del contenido */
-  margin: 0;           /* Se utiliza el gap para la separación entre items */
+  border-radius: 10px;
+  padding: 5px;
+  margin: 0;
   font-size: 1rem;
 }
-
 .footer {
   background-color: #181818;
   padding: 1rem;
@@ -160,13 +158,11 @@ padding: 0 5px; /* 5px de espacio a los costados */
   font-size: 0.9rem;
   color: #b3b3b3;
 }
-
 #recentList {
   list-style: none;
   padding: 0;
-  margin: 20px;  /* Márgenes en todos los bordes */
+  margin: 20px;
 }
-
 .recent-item {
   background-color: #1e1e1e;
   border-radius: 8px;
@@ -176,7 +172,6 @@ padding: 0 5px; /* 5px de espacio a los costados */
   justify-content: space-between;
   align-items: center;
 }
-
 .recent-item img {
   width: 50px;
   height: 50px;
@@ -184,34 +179,27 @@ padding: 0 5px; /* 5px de espacio a los costados */
   border-radius: 4px;
   margin-right: 10px;
 }
-
 .recent-item .track-name {
   font-size: 1rem;
   font-weight: bold;
   margin-bottom: 4px;
 }
-
 .recent-item .track-artists {
   font-size: 0.9rem;
   color: #b3b3b3;
 }
-
 .recent-item .track-played-at {
   font-size: 0.8rem;
   color: #b3b3b3;
   white-space: nowrap;
   text-align: right;
 }
-
-/* Título de la sección */
 #recentListTitle {
   text-align: center;
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 10px;
 }
-
-/* Media queries para dispositivos móviles */
 @media (max-width: 768px) {
   .top-bar {
     flex-direction: column;
@@ -240,8 +228,8 @@ padding: 0 5px; /* 5px de espacio a los costados */
     padding: 0 1rem;
   }
   .footer {
-  padding: 0.8rem;
-  font-size: 0.85rem;
+    padding: 0.8rem;
+    font-size: 0.85rem;
   }
   .recent-item {
     flex-direction: column;
@@ -252,7 +240,6 @@ padding: 0 5px; /* 5px de espacio a los costados */
     text-align: left;
   }
 }
-/* Iconos de control */
 .btn-icon {
   background: rgba(255, 255, 255, 0.1);
   border: none;
@@ -265,21 +252,16 @@ padding: 0 5px; /* 5px de espacio a los costados */
   justify-content: center;
   transition: all 0.3s ease;
 }
-
 .btn-icon:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: scale(1.1);
 }
-
 .btn-icon:active {
   transform: scale(0.95);
 }
-
 .btn-icon i {
   font-size: 1.2rem;
 }
-
-/* Estilos para el select de repeat */
 #repeatSelect {
   width: 120px !important;
   height: 40px;
@@ -292,21 +274,16 @@ padding: 0 5px; /* 5px de espacio a los costados */
   -moz-appearance: none;
   appearance: none;
 }
-
 #repeatSelect option {
   background: #181818;
   color: white;
 }
-
-/* Icono de flecha para el select */
 #repeatSelect {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 12px;
 }
-
-/* Barra de progreso */
 .progress-container {
   width: 100%;
   height: 4px;
@@ -314,7 +291,6 @@ padding: 0 5px; /* 5px de espacio a los costados */
   border-radius: 2px;
   margin-top: 10px;
 }
-
 .progress-bar {
   height: 100%;
   background-color: #1db9b9;
@@ -322,7 +298,6 @@ padding: 0 5px; /* 5px de espacio a los costados */
   width: 0%;
   transition: width 0.1s linear;
 }
-
 .time-info {
   display: flex;
   justify-content: space-between;
@@ -330,8 +305,6 @@ padding: 0 5px; /* 5px de espacio a los costados */
   font-size: 0.8rem;
   color: #b3b3b3;
 }
-
-/* Tarjeta de Ahora Reproduciendo */
 .np-card {
   width: 100%;
   display: flex;
@@ -342,8 +315,6 @@ padding: 0 5px; /* 5px de espacio a los costados */
   box-shadow: 0 2px 4px rgba(0,0,0,0.5);
   margin: 1rem;
 }
-
-/* Carátula más grande y pegada a la izquierda */
 .np-album {
   width: 150px;
   height: 150px;
@@ -351,40 +322,31 @@ padding: 0 5px; /* 5px de espacio a los costados */
   object-fit: cover;
   margin-right: 1.5rem;
 }
-
-/* Contenedor de la información */
 .np-info {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
-/* Título centrado y artistas debajo */
 .np-text {
   width: 100%;
   text-align: center;
   margin-bottom: 1rem;
 }
-
 .np-title {
   margin: 0;
   font-weight: bold;
   font-size: 1.3rem;
 }
-
 .np-artists {
   margin: 0.3rem 0 0.5rem;
   color: #b3b3b3;
   font-size: 1rem;
 }
-
-/* Barra de progreso que ocupa todo el ancho, con márgenes laterales */
 .np-progress {
   width: 100%;
   padding: 0 10px;
 }
-
 .progress-container {
   width: 100%;
   height: 6px;
@@ -392,14 +354,12 @@ padding: 0 5px; /* 5px de espacio a los costados */
   border-radius: 3px;
   margin: 0.5rem 0;
 }
-
 .progress-bar {
   height: 100%;
   background-color: #1db9b9;
   border-radius: 3px;
   transition: width 0.1s linear;
 }
-
 .time-info {
   display: flex;
   justify-content: space-between;

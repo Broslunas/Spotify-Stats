@@ -1,11 +1,9 @@
-// Función para obtener parámetros de la URL
 function getQueryParam(param) {
   const params = new URLSearchParams(window.location.search);
   return params.get(param);
 }
 const accessToken = getQueryParam('access_token');
 
-// Referencias a elementos del DOM
 const loginDiv = document.getElementById('login');
 const topBar = document.getElementById('topBar');
 const userImg = document.getElementById('userImg');
@@ -30,13 +28,11 @@ const genresItems = document.getElementById('genresItems');
 
 const recentPlayedTitle = document.getElementById('recentPlayedTitle');
 
-// Botones "Ver más" (ocultos por defecto en el HTML)
 const verMasTopTracks = document.getElementById('verMasTopTracks');
 const verMasTopArtists = document.getElementById('verMasTopArtists');
 const verMasGenres = document.getElementById('verMasGenres');
 const verMasRecentlyPlayed = document.getElementById('verMasRecentlyPlayed');
 
-// Botones de control para sliders
 const tracksLeftBtn = document.getElementById('tracksLeft');
 const tracksRightBtn = document.getElementById('tracksRight');
 const artistsLeftBtn = document.getElementById('artistsLeft');
@@ -65,54 +61,50 @@ if (accessToken) {
   topBar.style.display = 'flex';
   timeRangeNote.style.display = 'block';
 
-  // Mostrar controles de reproducción
   const playbackControls = document.getElementById('playbackControls');
   playbackControls.style.display = 'block';
 
   const API_BASE_URL = 'https://api.broslunas.com';
 
-  // Modificar la función handleResponse para que devuelva la promesa
-const handleResponse = (endpoint, method = 'PUT') => {
-  return fetch(`${API_BASE_URL}${endpoint}`, { // Añadir return aquí
-    method,
-    headers: {
-      'Authorization': `Bearer ${accessToken}`,
-      'Content-Type': 'application/json'
-    }
-  })
-  .then(response => {
-    if (response.status === 204 || response.headers.get('Content-Length') === '0') {
-      return Promise.resolve(); // Devolver promesa resuelta
-    }
-    return response.json();
-  })
-  .catch(err => {
-    console.error('Error en la petición', err);
-    throw err; // Propagar el error
-  });
-};
+  const handleResponse = (endpoint, method = 'PUT') => {
+    return fetch(`${API_BASE_URL}${endpoint}`, {
+      method,
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      if (response.status === 204 || response.headers.get('Content-Length') === '0') {
+        return Promise.resolve();
+      }
+      return response.json();
+    })
+    .catch(err => {
+      console.error('Error en la petición', err);
+      throw err;
+    });
+  };
 
-function formatTime(ms) {
-  const minutes = Math.floor(ms / 60000);
-  const seconds = ((ms % 60000) / 1000).toFixed(0);
-  return `${minutes}:${seconds.padStart(2, '0')}`;
-}
+  function formatTime(ms) {
+    const minutes = Math.floor(ms / 60000);
+    const seconds = ((ms % 60000) / 1000).toFixed(0);
+    return `${minutes}:${seconds.padStart(2, '0')}`;
+  }
 
-// Modifica la función updateCurrentlyPlaying
-function updateCurrentlyPlaying() {
-  fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
-    .then(res => res.json())
-    .then(data => {
-      if (data.is_playing && data.item) {
-        currentlyPlayingSection.style.display = 'block';
-        let artists = data.item.artists.map(artist => artist.name).join(' • ');
-        
-        // Actualizar progreso
-        const progress = data.progress_ms || 0;
-        const duration = data.item.duration_ms || 1;
-        const progressPercent = (progress / duration * 100).toFixed(2);
-        
-        nowPlayingInfo.innerHTML = `
+  function updateCurrentlyPlaying() {
+    fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.is_playing && data.item) {
+          currentlyPlayingSection.style.display = 'block';
+          let artists = data.item.artists.map(artist => artist.name).join(' • ');
+          
+          const progress = data.progress_ms || 0;
+          const duration = data.item.duration_ms || 1;
+          const progressPercent = (progress / duration * 100).toFixed(2);
+          
+          nowPlayingInfo.innerHTML = `
   <div class="np-card">
     <img class="np-album" src="${data.item.album.images[0]?.url || ''}" alt="Cover">
     <div class="np-info">
@@ -132,32 +124,30 @@ function updateCurrentlyPlaying() {
     </div>
   </div>
 `;
-
-
-
-        if (data.is_playing) {
           setTimeout(updateCurrentlyPlaying, 1000);
+        } else {
+          currentlyPlayingSection.style.display = 'none';
+          setTimeout(updateCurrentlyPlaying, 5000);
         }
-      } else {
+      })
+      .catch(() => {
         currentlyPlayingSection.style.display = 'none';
-      }
-    })
-    .catch(() => currentlyPlayingSection.style.display = 'none');
-}
+        setTimeout(updateCurrentlyPlaying, 5000);
+      });
+  }
 
-document.getElementById('nextBtn').addEventListener('click', () => {
-  handleResponse(`/spotify/next?access_token=${accessToken}`, 'POST')
-    .then(setTimeout(updateCurrentlyPlaying, 100))
-    .catch(console.error);
-});
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    handleResponse(`/spotify/next?access_token=${accessToken}`, 'POST')
+      .then(setTimeout(updateCurrentlyPlaying, 100))
+      .catch(console.error);
+  });
 
-document.getElementById('prevBtn').addEventListener('click', () => {
-  handleResponse(`/spotify/previous?access_token=${accessToken}`, 'POST')
-    .then(setTimeout(updateCurrentlyPlaying, 100))
-    .catch(console.error);
-});
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    handleResponse(`/spotify/previous?access_token=${accessToken}`, 'POST')
+      .then(setTimeout(updateCurrentlyPlaying, 100))
+      .catch(console.error);
+  });
 
-  // Perfil del usuario
   fetch(`${API_BASE_URL}/spotify/profile?access_token=${accessToken}`)
     .then(res => res.json())
     .then(data => {
@@ -166,21 +156,18 @@ document.getElementById('prevBtn').addEventListener('click', () => {
     })
     .catch(console.error);
 
-  // Canción actualmente en reproducción (carga inicial)
-fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
-.then(res => res.json())
-.then(data => {
-  if (data.is_playing && data.item) {
-    currentlyPlayingSection.style.display = 'block';
-    let artists = data.item.artists.map(artist => artist.name).join(' • ');
-    
-    // Calcular progreso inicial
-    const progress = data.progress_ms || 0;
-    const duration = data.item.duration_ms || 1;
-    const progressPercent = (progress / duration * 100).toFixed(2);
+  fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.is_playing && data.item) {
+        currentlyPlayingSection.style.display = 'block';
+        let artists = data.item.artists.map(artist => artist.name).join(' • ');
+        
+        const progress = data.progress_ms || 0;
+        const duration = data.item.duration_ms || 1;
+        const progressPercent = (progress / duration * 100).toFixed(2);
 
-    // Añadir la barra de progreso al HTML inicial
-    nowPlayingInfo.innerHTML = `
+        nowPlayingInfo.innerHTML = `
       <img src="${data.item.album.images[0]?.url || ''}" alt="Cover">
       <div class="np-info">
         <p style="margin: 0; font-weight: bold;">${data.item.name}</p>
@@ -195,17 +182,15 @@ fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
       </div>
     `;
 
-    // Iniciar actualizaciones automáticas si está reproduciéndose
-    if (data.is_playing) {
-      setTimeout(updateCurrentlyPlaying, 1000);
-    }
-  } else {
-    currentlyPlayingSection.style.display = 'none';
-  }
-})
-.catch(() => currentlyPlayingSection.style.display = 'none');
+        if (data.is_playing) {
+          setTimeout(updateCurrentlyPlaying, 1000);
+        }
+      } else {
+        currentlyPlayingSection.style.display = 'none';
+      }
+    })
+    .catch(() => currentlyPlayingSection.style.display = 'none');
 
-  // Top Tracks (se muestran en slider)
   fetch(`${API_BASE_URL}/spotify/top-tracks?access_token=${accessToken}`)
     .then(res => res.json())
     .then(data => {
@@ -227,7 +212,6 @@ fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
           `;
           tracksItems.appendChild(div);
         });
-        // Mostrar "Ver más" si hay más de 20 elementos
         if (data.total > 20) {
           verMasTopTracks.style.display = 'block';
           verMasTopTracks.href = `/more/?type=top-tracks&access_token=${accessToken}`;
@@ -238,7 +222,6 @@ fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
     })
     .catch(console.error);
 
-  // Top Artists
   fetch(`${API_BASE_URL}/spotify/top-artists?access_token=${accessToken}`)
     .then(res => res.json())
     .then(data => {
@@ -269,7 +252,6 @@ fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
     })
     .catch(console.error);
 
-  // Últimas canciones reproducidas en LISTA (usando recently-played)
   fetch(`${API_BASE_URL}/spotify/recently-played?access_token=${accessToken}`)
     .then(res => res.json())
     .then(data => {
@@ -305,7 +287,6 @@ fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
     })
     .catch(console.error);
 
-  // Géneros (calculados a partir de los top artists)
   fetch(`${API_BASE_URL}/spotify/top-artists?access_token=${accessToken}`)
     .then(res => res.json())
     .then(data => {
