@@ -44,6 +44,8 @@ const artistsRightBtn = document.getElementById('artistsRight');
 const genresLeftBtn = document.getElementById('genresLeft');
 const genresRightBtn = document.getElementById('genresRight');
 
+const PlaybackBtn = document.getElementById('playbackControls');
+
 logoutBtn.addEventListener('click', () => {
   window.location.href = '/';
 });
@@ -69,56 +71,73 @@ if (accessToken) {
 
   const API_BASE_URL = 'https://api.broslunas.com';
 
-  const handleResponse = async (endpoint, method = 'PUT') => {
-    try {
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-        method,
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      if (response.status === 204 || response.headers.get('Content-Length') === '0') {
-        console.log('Éxito: No hay contenido en la respuesta.');
-        return;
-      }
-      const data = await response.json();
-      console.log('Respuesta:', data);
-    } catch (err) {
-      console.error('Error en la petición', err);
+  // Modificar la función handleResponse para que devuelva la promesa
+const handleResponse = (endpoint, method = 'PUT') => {
+  return fetch(`${API_BASE_URL}${endpoint}`, { // Añadir return aquí
+    method,
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
     }
-  };
-
-  // Eventos para los botones de reproducción
-  document.getElementById('pauseBtn').addEventListener('click', () => {
-    handleResponse(`/spotify/pause?access_token=${accessToken}`);
+  })
+  .then(response => {
+    if (response.status === 204 || response.headers.get('Content-Length') === '0') {
+      return Promise.resolve(); // Devolver promesa resuelta
+    }
+    return response.json();
+  })
+  .catch(err => {
+    console.error('Error en la petición', err);
+    throw err; // Propagar el error
   });
+};
 
-  document.getElementById('playBtn').addEventListener('click', () => {
-    handleResponse(`/spotify/play?access_token=${accessToken}`);
-  });
+// Mover la función updateCurrentlyPlaying dentro del bloque if(accessToken)
+function updateCurrentlyPlaying() {
+  fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.is_playing && data.item) {
+        currentlyPlayingSection.style.display = 'block';
+        let artists = data.item.artists.map(artist => artist.name).join(' • ');
+        nowPlayingInfo.innerHTML = `
+          <img src="${data.item.album.images[0]?.url || ''}" alt="Cover">
+          <div class="np-info">
+            <p style="margin: 0; font-weight: bold;">${data.item.name}</p>
+            <p style="margin: 0; color: #b3b3b3;">${artists}</p>
+          </div>
+        `;
+      } else {
+        currentlyPlayingSection.style.display = 'none';
+      }
+    })
+    .catch(() => currentlyPlayingSection.style.display = 'none');
+}
 
-  document.getElementById('nextBtn').addEventListener('click', () => {
-    handleResponse(`/spotify/next?access_token=${accessToken}`, 'POST');
-  });
+// Modificar los event listeners para asegurar la secuencia correcta
+document.getElementById('pauseBtn').addEventListener('click', () => {
+  handleResponse(`/spotify/pause?access_token=${accessToken}`)
+    .then(updateCurrentlyPlaying)
+    .catch(console.error);
+});
 
-  document.getElementById('prevBtn').addEventListener('click', () => {
-    handleResponse(`/spotify/previous?access_token=${accessToken}`, 'POST');
-  });
+document.getElementById('playBtn').addEventListener('click', () => {
+  handleResponse(`/spotify/play?access_token=${accessToken}`)
+    .then(updateCurrentlyPlaying)
+    .catch(console.error);
+});
 
-  // Toggle para shuffle: alterna entre true y false
-  let shuffleState = false;
-  document.getElementById('shuffleBtn').addEventListener('click', () => {
-    shuffleState = !shuffleState;
-    handleResponse(`/spotify/shuffle?access_token=${accessToken}&state=${shuffleState}`);
-    document.getElementById('shuffleBtn').textContent = shuffleState ? 'Shuffle Activado' : 'Shuffle Desactivado';
-  });
+document.getElementById('nextBtn').addEventListener('click', () => {
+  handleResponse(`/spotify/next?access_token=${accessToken}`, 'POST')
+    .then(updateCurrentlyPlaying)
+    .catch(console.error);
+});
 
-  // Selector para repeat
-  document.getElementById('repeatSelect').addEventListener('change', (e) => {
-    const repeatState = e.target.value;
-    handleResponse(`/spotify/repeat?access_token=${accessToken}&state=${repeatState}`);
-  });
+document.getElementById('prevBtn').addEventListener('click', () => {
+  handleResponse(`/spotify/previous?access_token=${accessToken}`, 'POST')
+    .then(updateCurrentlyPlaying)
+    .catch(console.error);
+});
 
   // Perfil del usuario
   fetch(`${API_BASE_URL}/spotify/profile?access_token=${accessToken}`)
@@ -283,4 +302,3 @@ if (accessToken) {
     })
     .catch(console.error);
 }
-

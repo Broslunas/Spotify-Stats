@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Broslunas Stats</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="icon" href="https://cdn.broslunas.com/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="styles.css">
@@ -26,17 +27,25 @@
 
   <div id="timeRangeNote" class="time-range-note">Datos de las últimas 4 semanas</div>
 
-  <div id="playbackControls" style="display: none; text-align: center; margin: 1rem;">
-    <button id="prevBtn" class="btn btn-secondary">Anterior</button>
-    <button id="playBtn" class="btn btn-success">Play</button>
-    <button id="pauseBtn" class="btn btn-danger">Pausa</button>
-    <button id="nextBtn" class="btn btn-secondary">Siguiente</button>
-    <button id="shuffleBtn" class="btn btn-info">Shuffle</button>
-    <select id="repeatSelect" class="form-control d-inline-block" style="width: auto; margin-left: 10px;">
-      <option value="off">No repetir</option>
-      <option value="track">Repetir track</option>
-      <option value="context">Repetir lista</option>
-    </select>
+  <div id="playbackControls" style="display: none;">
+    <div id="playbackControls-2" style="text-align: center; margin: 1rem; gap: 10px;" class="d-flex justify-content-center align-items-center">
+    
+      <button id="prevBtn" class="btn btn-icon">
+        <i style="color: white" class="fas fa-step-backward"></i>
+      </button>
+      
+      <button id="playBtn" class="btn btn-icon">
+        <i style="color: white" class="fas fa-play"></i>
+      </button>
+      
+      <button id="pauseBtn" class="btn btn-icon">
+        <i style="color: white" class="fas fa-pause"></i>
+      </button>
+      
+      <button id="nextBtn" class="btn btn-icon">
+        <i style="color: white" class="fas fa-step-forward"></i>
+      </button>
+    </div>
   </div>
 
   <div id="currentlyPlayingSection" style="display: none;">
