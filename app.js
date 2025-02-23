@@ -92,7 +92,13 @@ const handleResponse = (endpoint, method = 'PUT') => {
   });
 };
 
-// Mover la función updateCurrentlyPlaying dentro del bloque if(accessToken)
+function formatTime(ms) {
+  const minutes = Math.floor(ms / 60000);
+  const seconds = ((ms % 60000) / 1000).toFixed(0);
+  return `${minutes}:${seconds.padStart(2, '0')}`;
+}
+
+// Modifica la función updateCurrentlyPlaying
 function updateCurrentlyPlaying() {
   fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
     .then(res => res.json())
@@ -100,13 +106,32 @@ function updateCurrentlyPlaying() {
       if (data.is_playing && data.item) {
         currentlyPlayingSection.style.display = 'block';
         let artists = data.item.artists.map(artist => artist.name).join(' • ');
+        
+        // Actualizar progreso
+        const progress = data.progress_ms || 0;
+        const duration = data.item.duration_ms || 1;
+        const progressPercent = (progress / duration * 100).toFixed(2);
+        
+        // Actualizar el DOM
         nowPlayingInfo.innerHTML = `
           <img src="${data.item.album.images[0]?.url || ''}" alt="Cover">
           <div class="np-info">
             <p style="margin: 0; font-weight: bold;">${data.item.name}</p>
             <p style="margin: 0; color: #b3b3b3;">${artists}</p>
+            <div class="progress-container">
+              <div class="progress-bar" id="progressBar" style="width: ${progressPercent}%"></div>
+            </div>
+            <div class="time-info">
+              <span id="currentTime">${formatTime(progress)}</span>
+              <span id="duration">${formatTime(duration)}</span>
+            </div>
           </div>
         `;
+
+        // Actualización automática cada segundo si está reproduciéndose
+        if (data.is_playing) {
+          setTimeout(updateCurrentlyPlaying, 100);
+        }
       } else {
         currentlyPlayingSection.style.display = 'none';
       }
@@ -117,25 +142,25 @@ function updateCurrentlyPlaying() {
 // Modificar los event listeners para asegurar la secuencia correcta
 document.getElementById('pauseBtn').addEventListener('click', () => {
   handleResponse(`/spotify/pause?access_token=${accessToken}`)
-    .then(updateCurrentlyPlaying)
+    .then(setTimeout(updateCurrentlyPlaying, 100))
     .catch(console.error);
 });
 
 document.getElementById('playBtn').addEventListener('click', () => {
   handleResponse(`/spotify/play?access_token=${accessToken}`)
-    .then(updateCurrentlyPlaying)
+    .then(setTimeout(updateCurrentlyPlaying, 100))
     .catch(console.error);
 });
 
 document.getElementById('nextBtn').addEventListener('click', () => {
   handleResponse(`/spotify/next?access_token=${accessToken}`, 'POST')
-    .then(updateCurrentlyPlaying)
+    .then(setTimeout(updateCurrentlyPlaying, 100))
     .catch(console.error);
 });
 
 document.getElementById('prevBtn').addEventListener('click', () => {
   handleResponse(`/spotify/previous?access_token=${accessToken}`, 'POST')
-    .then(updateCurrentlyPlaying)
+    .then(setTimeout(updateCurrentlyPlaying, 100))
     .catch(console.error);
 });
 
@@ -148,25 +173,44 @@ document.getElementById('prevBtn').addEventListener('click', () => {
     })
     .catch(console.error);
 
-  // Canción actualmente en reproducción
-  fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
-    .then(res => res.json())
-    .then(data => {
-      if (data.is_playing && data.item) {
-        currentlyPlayingSection.style.display = 'block';
-        let artists = data.item.artists.map(artist => artist.name).join(' • ');
-        nowPlayingInfo.innerHTML = `
-          <img src="${data.item.album.images[0]?.url || ''}" alt="Cover">
-          <div class="np-info">
-            <p style="margin: 0; font-weight: bold;">${data.item.name}</p>
-            <p style="margin: 0; color: #b3b3b3;">${artists}</p>
-          </div>
-        `;
-      } else {
-        currentlyPlayingSection.style.display = 'none';
-      }
-    })
-    .catch(() => currentlyPlayingSection.style.display = 'none');
+  // Canción actualmente en reproducción (carga inicial)
+fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
+.then(res => res.json())
+.then(data => {
+  if (data.is_playing && data.item) {
+    currentlyPlayingSection.style.display = 'block';
+    let artists = data.item.artists.map(artist => artist.name).join(' • ');
+    
+    // Calcular progreso inicial
+    const progress = data.progress_ms || 0;
+    const duration = data.item.duration_ms || 1;
+    const progressPercent = (progress / duration * 100).toFixed(2);
+
+    // Añadir la barra de progreso al HTML inicial
+    nowPlayingInfo.innerHTML = `
+      <img src="${data.item.album.images[0]?.url || ''}" alt="Cover">
+      <div class="np-info">
+        <p style="margin: 0; font-weight: bold;">${data.item.name}</p>
+        <p style="margin: 0; color: #b3b3b3;">${artists}</p>
+        <div class="progress-container">
+          <div class="progress-bar" id="progressBar" style="width: ${progressPercent}%"></div>
+        </div>
+        <div class="time-info">
+          <span id="currentTime">${formatTime(progress)}</span>
+          <span id="duration">${formatTime(duration)}</span>
+        </div>
+      </div>
+    `;
+
+    // Iniciar actualizaciones automáticas si está reproduciéndose
+    if (data.is_playing) {
+      setTimeout(updateCurrentlyPlaying, 1000);
+    }
+  } else {
+    currentlyPlayingSection.style.display = 'none';
+  }
+})
+.catch(() => currentlyPlayingSection.style.display = 'none');
 
   // Top Tracks (se muestran en slider)
   fetch(`${API_BASE_URL}/spotify/top-tracks?access_token=${accessToken}`)

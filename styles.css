@@ -310,3 +310,28 @@ padding: 0 5px; /* 5px de espacio a los costados */
   background-position: right 10px center;
   background-size: 12px;
 }
+
+/* Barra de progreso */
+.progress-container {
+  width: 100%;
+  height: 4px;
+  background-color: #535353;
+  border-radius: 2px;
+  margin-top: 10px;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #1db9b9;
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.time-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  font-size: 0.8rem;
+  color: #b3b3b3;
+}
