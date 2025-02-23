@@ -72,9 +72,9 @@ main {
   margin: 1rem;
 }
 .now-playing-card img {
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
+  width: 150px;
+  height: 150px;
+  border-radius: 15px;
   margin-right: 1rem;
 }
 .np-info {
