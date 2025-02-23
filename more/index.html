@@ -86,7 +86,7 @@
                 <div class="card">
                   <img src="${imgSrc}" class="card-img-top" alt="Track">
                   <div class="card-body">
-                    <h5 class="card-title" title="${track.name}">${track.name}</h5>
+                    <h2 class="card-title" title="${track.name}">${track.name}</h2>
                     <p class="card-text" title="${track.artists[0].name}">${track.artists[0].name}</p>
                     <a href="${track.external_urls.spotify}" target="_blank" class="btn btn-primary btn-sm">Escuchar</a>
                   </div>
@@ -104,7 +104,7 @@
                 <div class="card">
                   <img src="${imgSrc}" class="card-img-top" alt="Artist">
                   <div class="card-body">
-                    <h5 class="card-title" title="${artist.name}">${artist.name}</h5>
+                    <h2 class="card-title" title="${artist.name}">${artist.name}</h2>
                     <a href="${artist.external_urls.spotify}" target="_blank" class="btn btn-primary btn-sm">Ver en Spotify</a>
                   </div>
                 </div>
@@ -122,7 +122,7 @@
                 <div class="card">
                   <img src="${imgSrc}" class="card-img-top" alt="Track">
                   <div class="card-body">
-                    <h5 class="card-title" title="${track.name}">${track.name}</h5>
+                    <h2 class="card-title" title="${track.name}">${track.name}</h2>
                     <p class="card-text" title="${track.artists[0].name}">${track.artists[0].name}</p>
                     <a href="${track.external_urls.spotify}" target="_blank" class="btn btn-primary btn-sm">Escuchar</a>
                   </div>
@@ -146,7 +146,7 @@
               col.innerHTML = `
                 <div class="card">
                   <div class="card-body text-center">
-                    <h5 class="card-title">${genre}</h5>
+                    <h2 class="card-title">${genre}</h2>
                     <p class="card-text">Repeticiones: ${genreCounts[genre]}</p>
                   </div>
                 </div>

@@ -28,8 +28,7 @@ const genresTitle = document.getElementById('genresTitle');
 const genresSlider = document.getElementById('genresSlider');
 const genresItems = document.getElementById('genresItems');
 
-// Para "últimas canciones reproducidas" las mostraremos en lista (no slider)
-const recentList = document.getElementById('recentList'); // en el HTML debes tener, por ejemplo: <ul id="recentList" style="display:none; list-style:none; padding:0;"></ul>
+const recentPlayedTitle = document.getElementById('recentPlayedTitle');
 
 // Botones "Ver más" (ocultos por defecto en el HTML)
 const verMasTopTracks = document.getElementById('verMasTopTracks');
@@ -63,6 +62,63 @@ if (accessToken) {
   loginDiv.style.display = 'none';
   topBar.style.display = 'flex';
   timeRangeNote.style.display = 'block';
+
+  // Mostrar controles de reproducción
+  const playbackControls = document.getElementById('playbackControls');
+  playbackControls.style.display = 'block';
+
+  const API_BASE_URL = 'https://api.broslunas.com';
+
+  const handleResponse = async (endpoint, method = 'PUT') => {
+    try {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method,
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      if (response.status === 204 || response.headers.get('Content-Length') === '0') {
+        console.log('Éxito: No hay contenido en la respuesta.');
+        return;
+      }
+      const data = await response.json();
+      console.log('Respuesta:', data);
+    } catch (err) {
+      console.error('Error en la petición', err);
+    }
+  };
+
+  // Eventos para los botones de reproducción
+  document.getElementById('pauseBtn').addEventListener('click', () => {
+    handleResponse(`/spotify/pause?access_token=${accessToken}`);
+  });
+
+  document.getElementById('playBtn').addEventListener('click', () => {
+    handleResponse(`/spotify/play?access_token=${accessToken}`);
+  });
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    handleResponse(`/spotify/next?access_token=${accessToken}`, 'POST');
+  });
+
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    handleResponse(`/spotify/previous?access_token=${accessToken}`, 'POST');
+  });
+
+  // Toggle para shuffle: alterna entre true y false
+  let shuffleState = false;
+  document.getElementById('shuffleBtn').addEventListener('click', () => {
+    shuffleState = !shuffleState;
+    handleResponse(`/spotify/shuffle?access_token=${accessToken}&state=${shuffleState}`);
+    document.getElementById('shuffleBtn').textContent = shuffleState ? 'Shuffle On' : 'Shuffle Off';
+  });
+
+  // Selector para repeat
+  document.getElementById('repeatSelect').addEventListener('change', (e) => {
+    const repeatState = e.target.value;
+    handleResponse(`/spotify/repeat?access_token=${accessToken}&state=${repeatState}`);
+  });
 
   // Perfil del usuario
   fetch(`https://api.broslunas.com/spotify/profile?access_token=${accessToken}`)
@@ -163,9 +219,9 @@ if (accessToken) {
     .then(data => {
       const recentTracks = data.items || [];
       if (recentTracks.length) {
-        // Mostramos la lista (asegúrate de tener en tu HTML un <ul id="recentList">)
         recentList.style.display = 'block';
         recentList.innerHTML = '';
+        document.getElementById('recentPlayedTitle').style.display = 'block';
         recentTracks.forEach(item => {
           const track = item.track;
           const playedAt = new Date(item.played_at).toLocaleString();
@@ -183,7 +239,6 @@ if (accessToken) {
           `;
           recentList.appendChild(li);
         });
-        // Opcional: si existe paginación (data.next), muestra el botón "Ver más"
         if (data.next) {
           verMasRecentlyPlayed.style.display = 'block';
           verMasRecentlyPlayed.href = `/more/?type=recently-played&access_token=${accessToken}`;
@@ -228,3 +283,4 @@ if (accessToken) {
     })
     .catch(console.error);
 }
+
