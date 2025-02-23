@@ -112,23 +112,29 @@ function updateCurrentlyPlaying() {
         const duration = data.item.duration_ms || 1;
         const progressPercent = (progress / duration * 100).toFixed(2);
         
-        // Actualizar el DOM
         nowPlayingInfo.innerHTML = `
-          <img src="${data.item.album.images[0]?.url || ''}" alt="Cover">
-          <div class="np-info">
-            <p style="margin: 0; font-weight: bold;">${data.item.name}</p>
-            <p style="margin: 0; color: #b3b3b3;">${artists}</p>
-            <div class="progress-container">
-              <div class="progress-bar" id="progressBar" style="width: ${progressPercent}%"></div>
-            </div>
-            <div class="time-info">
-              <span id="currentTime">${formatTime(progress)}</span>
-              <span id="duration">${formatTime(duration)}</span>
-            </div>
-          </div>
-        `;
+  <div class="np-card">
+    <img class="np-album" src="${data.item.album.images[0]?.url || ''}" alt="Cover">
+    <div class="np-info">
+      <div class="np-text">
+        <h3 class="np-title">${data.item.name}</h3>
+        <p class="np-artists">${artists}</p>
+      </div>
+      <div class="np-progress">
+        <div class="progress-container">
+          <div class="progress-bar" id="progressBar" style="width: ${progressPercent}%"></div>
+        </div>
+        <div class="time-info">
+          <span id="currentTime">${formatTime(progress)}</span>
+          <span id="duration">${formatTime(duration)}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+`;
 
-        // Actualización automática cada segundo si está reproduciéndose
+
+
         if (data.is_playing) {
           setTimeout(updateCurrentlyPlaying, 1000);
         }
@@ -138,19 +144,6 @@ function updateCurrentlyPlaying() {
     })
     .catch(() => currentlyPlayingSection.style.display = 'none');
 }
-
-// Modificar los event listeners para asegurar la secuencia correcta
-document.getElementById('pauseBtn').addEventListener('click', () => {
-  handleResponse(`/spotify/pause?access_token=${accessToken}`)
-    .then(setTimeout(updateCurrentlyPlaying, 100))
-    .catch(console.error);
-});
-
-document.getElementById('playBtn').addEventListener('click', () => {
-  handleResponse(`/spotify/play?access_token=${accessToken}`)
-    .then(setTimeout(updateCurrentlyPlaying, 100))
-    .catch(console.error);
-});
 
 document.getElementById('nextBtn').addEventListener('click', () => {
   handleResponse(`/spotify/next?access_token=${accessToken}`, 'POST')

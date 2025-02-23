@@ -27,30 +27,26 @@
 
   <div id="timeRangeNote" class="time-range-note">Datos de las últimas 4 semanas</div>
 
+
+  <div id="currentlyPlayingSection" style="display: none;">
+    <h2 class="section-title">Ahora reproduciendo</h2>
+    <div >
+      <div class="now-playing-card" id="nowPlayingInfo"></div>
+      
   <div id="playbackControls" style="display: none;">
-    <div id="playbackControls-2" style="text-align: center; margin: 1rem; gap: 10px;" class="d-flex justify-content-center align-items-center">
+    <div id="playbackControls-2" style="text-align: center; margin: 1rem; gap: 10px;" class="np-card d-flex justify-content-center align-items-center">
     
-      <button id="prevBtn" class="btn btn-icon">
+      <button id="prevBtn" class="np-controls btn btn-icon">
         <i style="color: white" class="fas fa-step-backward"></i>
       </button>
       
-      <button id="playBtn" class="btn btn-icon">
-        <i style="color: white" class="fas fa-play"></i>
-      </button>
-      
-      <button id="pauseBtn" class="btn btn-icon">
-        <i style="color: white" class="fas fa-pause"></i>
-      </button>
-      
-      <button id="nextBtn" class="btn btn-icon">
+      <button id="nextBtn" class="np-controls btn btn-icon">
         <i style="color: white" class="fas fa-step-forward"></i>
       </button>
     </div>
   </div>
-
-  <div id="currentlyPlayingSection" style="display: none;">
-    <h2 class="section-title">Ahora reproduciendo</h2>
-    <div class="now-playing-card" id="nowPlayingInfo"></div>
+    </div>
+    
   </div>
 
   <h2 class="section-title" id="tracksTitle" style="display: none;">Tus canciones más escuchadas</h2>
