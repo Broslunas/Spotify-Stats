@@ -111,7 +111,7 @@ if (accessToken) {
   document.getElementById('shuffleBtn').addEventListener('click', () => {
     shuffleState = !shuffleState;
     handleResponse(`/spotify/shuffle?access_token=${accessToken}&state=${shuffleState}`);
-    document.getElementById('shuffleBtn').textContent = shuffleState ? 'Shuffle On' : 'Shuffle Off';
+    document.getElementById('shuffleBtn').textContent = shuffleState ? 'Shuffle Activado' : 'Shuffle Desactivado';
   });
 
   // Selector para repeat
@@ -124,7 +124,7 @@ if (accessToken) {
   fetch(`${API_BASE_URL}/spotify/profile?access_token=${accessToken}`)
     .then(res => res.json())
     .then(data => {
-      userImg.src = (data.images && data.images.length) ? data.images[0].url : 'https://via.placeholder.com/50';
+      userImg.src = (data.images && data.images.length) ? data.images[0].url : 'https://cdn.broslunas.com/img/user.png';
       userName.textContent = data.display_name || 'Usuario Spotify';
     })
     .catch(console.error);
