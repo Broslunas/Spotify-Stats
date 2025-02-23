@@ -130,7 +130,7 @@ function updateCurrentlyPlaying() {
 
         // Actualización automática cada segundo si está reproduciéndose
         if (data.is_playing) {
-          setTimeout(updateCurrentlyPlaying, 100);
+          setTimeout(updateCurrentlyPlaying, 1000);
         }
       } else {
         currentlyPlayingSection.style.display = 'none';
