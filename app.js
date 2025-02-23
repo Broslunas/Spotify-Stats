@@ -121,7 +121,7 @@ if (accessToken) {
   });
 
   // Perfil del usuario
-  fetch(`https://api.broslunas.com/spotify/profile?access_token=${accessToken}`)
+  fetch(`${API_BASE_URL}/spotify/profile?access_token=${accessToken}`)
     .then(res => res.json())
     .then(data => {
       userImg.src = (data.images && data.images.length) ? data.images[0].url : 'https://via.placeholder.com/50';
@@ -130,7 +130,7 @@ if (accessToken) {
     .catch(console.error);
 
   // Canción actualmente en reproducción
-  fetch(`https://api.broslunas.com/spotify/currently-playing?access_token=${accessToken}`)
+  fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
     .then(res => res.json())
     .then(data => {
       if (data.is_playing && data.item) {
@@ -150,7 +150,7 @@ if (accessToken) {
     .catch(() => currentlyPlayingSection.style.display = 'none');
 
   // Top Tracks (se muestran en slider)
-  fetch(`https://api.broslunas.com/spotify/top-tracks?access_token=${accessToken}`)
+  fetch(`${API_BASE_URL}/spotify/top-tracks?access_token=${accessToken}`)
     .then(res => res.json())
     .then(data => {
       const tracks = data.items || [];
@@ -183,7 +183,7 @@ if (accessToken) {
     .catch(console.error);
 
   // Top Artists
-  fetch(`https://api.broslunas.com/spotify/top-artists?access_token=${accessToken}`)
+  fetch(`${API_BASE_URL}/spotify/top-artists?access_token=${accessToken}`)
     .then(res => res.json())
     .then(data => {
       const artists = data.items || [];
@@ -214,7 +214,7 @@ if (accessToken) {
     .catch(console.error);
 
   // Últimas canciones reproducidas en LISTA (usando recently-played)
-  fetch(`https://api.broslunas.com/spotify/recently-played?access_token=${accessToken}`)
+  fetch(`${API_BASE_URL}/spotify/recently-played?access_token=${accessToken}`)
     .then(res => res.json())
     .then(data => {
       const recentTracks = data.items || [];
@@ -250,7 +250,7 @@ if (accessToken) {
     .catch(console.error);
 
   // Géneros (calculados a partir de los top artists)
-  fetch(`https://api.broslunas.com/spotify/top-artists?access_token=${accessToken}`)
+  fetch(`${API_BASE_URL}/spotify/top-artists?access_token=${accessToken}`)
     .then(res => res.json())
     .then(data => {
       const artists = data.items || [];
