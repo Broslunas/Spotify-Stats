@@ -4,6 +4,26 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+main {
+  flex: 1;
+  width: 100%;
+  overflow-x: hidden;
+}
+.footer {
+  background-color: #181818;
+  color: #b3b3b3;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: auto;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+  z-index: 100;
 }
 .container {
   margin: 20px auto;
@@ -150,14 +170,6 @@ body {
   margin: 0;
   font-size: 1rem;
 }
-.footer {
-  background-color: #181818;
-  padding: 1rem;
-  text-align: center;
-  margin-top: 2rem;
-  font-size: 0.9rem;
-  color: #b3b3b3;
-}
 #recentList {
   list-style: none;
   padding: 0;
@@ -226,10 +238,6 @@ body {
   }
   .slider-items {
     padding: 0 1rem;
-  }
-  .footer {
-    padding: 0.8rem;
-    font-size: 0.85rem;
   }
   .recent-item {
     flex-direction: column;
