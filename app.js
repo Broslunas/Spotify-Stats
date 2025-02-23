@@ -124,7 +124,7 @@ if (accessToken) {
     </div>
   </div>
 `;
-          setTimeout(updateCurrentlyPlaying, 1000);
+          setTimeout(updateCurrentlyPlaying, 750);
         } else {
           currentlyPlayingSection.style.display = 'none';
           setTimeout(updateCurrentlyPlaying, 5000);
