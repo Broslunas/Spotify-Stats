@@ -138,13 +138,11 @@ if (accessToken) {
 
   document.getElementById('nextBtn').addEventListener('click', () => {
     handleResponse(`/spotify/next?access_token=${accessToken}`, 'POST')
-      .then(setTimeout(updateCurrentlyPlaying, 100))
       .catch(console.error);
   });
 
   document.getElementById('prevBtn').addEventListener('click', () => {
     handleResponse(`/spotify/previous?access_token=${accessToken}`, 'POST')
-      .then(setTimeout(updateCurrentlyPlaying, 100))
       .catch(console.error);
   });
 
