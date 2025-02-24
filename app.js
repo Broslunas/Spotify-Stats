@@ -85,8 +85,8 @@ if (accessToken) {
       throw err;
     });
   };
-
-let isPlaying = false;
+  
+  let isPlaying = false;
 
   function formatTime(ms) {
     const minutes = Math.floor(ms / 60000);
@@ -338,19 +338,4 @@ let isPlaying = false;
       }
     })
     .catch(console.error);
-}
-const volumeSlider = document.getElementById('volumeSlider');
-if (volumeSlider) {
-  volumeSlider.addEventListener('input', () => {
-    const volume = volumeSlider.value;
-    fetch(`${API_BASE_URL}/spotify/volume?access_token=${accessToken}&volume=${volume}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(res => res.json())
-    .then(data => console.log("Volumen ajustado:", data))
-    .catch(err => console.error("Error ajustando el volumen:", err));
-  });
 }
