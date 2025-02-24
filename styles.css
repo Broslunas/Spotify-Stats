@@ -374,3 +374,6 @@ main {
   font-size: 0.8rem;
   color: #b3b3b3;
 }
+.volume-control input[type="range"] {
+  width: 100px;
+}

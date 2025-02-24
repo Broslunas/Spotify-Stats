@@ -1,3 +1,5 @@
+const API_BASE_URL = 'https://api.broslunas.com';
+
 function getQueryParam(param) {
   const params = new URLSearchParams(window.location.search);
   return params.get(param);
@@ -42,8 +44,6 @@ const genresRightBtn = document.getElementById('genresRight');
 
 const PlaybackBtn = document.getElementById('playbackControls');
 
-let isPlaying = false;
-
 logoutBtn.addEventListener('click', () => {
   window.location.href = '/';
 });
@@ -66,8 +66,6 @@ if (accessToken) {
   const playbackControls = document.getElementById('playbackControls');
   playbackControls.style.display = 'block';
 
-  const API_BASE_URL = 'https://api.broslunas.com';
-
   const handleResponse = (endpoint, method = 'PUT') => {
     return fetch(`${API_BASE_URL}${endpoint}`, {
       method,
@@ -87,6 +85,8 @@ if (accessToken) {
       throw err;
     });
   };
+
+let isPlaying = false;
 
   function formatTime(ms) {
     const minutes = Math.floor(ms / 60000);
@@ -338,4 +338,19 @@ if (accessToken) {
       }
     })
     .catch(console.error);
+}
+const volumeSlider = document.getElementById('volumeSlider');
+if (volumeSlider) {
+  volumeSlider.addEventListener('input', () => {
+    const volume = volumeSlider.value;
+    fetch(`${API_BASE_URL}/spotify/volume?access_token=${accessToken}&volume=${volume}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(data => console.log("Volumen ajustado:", data))
+    .catch(err => console.error("Error ajustando el volumen:", err));
+  });
 }
