@@ -139,7 +139,7 @@ if (accessToken) {
         isPlaying = false;
         document.getElementById('playPauseBtn').innerHTML = `<i style="color: white" class="fas fa-play"></i>`;
         currentlyPlayingSection.style.display = 'block';
-        setTimeout(updateCurrentlyPlaying, 5000);
+        setTimeout(updateCurrentlyPlaying, 2000);
       });
   }
   const playPauseBtn = document.getElementById('playPauseBtn');
