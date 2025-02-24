@@ -132,7 +132,7 @@ if (accessToken) {
           isPlaying = false;
           currentlyPlayingSection.style.display = 'block';
           document.getElementById('playPauseBtn').innerHTML = `<i style="color: white" class="fas fa-play"></i>`;
-          setTimeout(updateCurrentlyPlaying, 5000);
+          setTimeout(updateCurrentlyPlaying, 2000);
         }
       })
       .catch(() => {
@@ -156,7 +156,7 @@ if (accessToken) {
       playPauseBtn.innerHTML = `<i style="color: white" class="fas fa-pause"></i>`;
     }
   });
-  
+
   document.getElementById('nextBtn').addEventListener('click', () => {
     handleResponse(`/spotify/next?access_token=${accessToken}`, 'POST')
       .catch(console.error);
