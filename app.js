@@ -42,6 +42,8 @@ const genresRightBtn = document.getElementById('genresRight');
 
 const PlaybackBtn = document.getElementById('playbackControls');
 
+let isPlaying = false;
+
 logoutBtn.addEventListener('click', () => {
   window.location.href = '/';
 });
@@ -91,12 +93,12 @@ if (accessToken) {
     const seconds = ((ms % 60000) / 1000).toFixed(0);
     return `${minutes}:${seconds.padStart(2, '0')}`;
   }
-
   function updateCurrentlyPlaying() {
     fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
       .then(res => res.json())
       .then(data => {
         if (data.is_playing && data.item) {
+          isPlaying = true;
           currentlyPlayingSection.style.display = 'block';
           let artists = data.item.artists.map(artist => artist.name).join(' • ');
           
@@ -105,37 +107,56 @@ if (accessToken) {
           const progressPercent = (progress / duration * 100).toFixed(2);
           
           nowPlayingInfo.innerHTML = `
-  <div class="np-card">
-    <img class="np-album" src="${data.item.album.images[0]?.url || ''}" alt="Cover">
-    <div class="np-info">
-      <div class="np-text">
-        <h3 class="np-title">${data.item.name}</h3>
-        <p class="np-artists">${artists}</p>
-      </div>
-      <div class="np-progress">
-        <div class="progress-container">
-          <div class="progress-bar" id="progressBar" style="width: ${progressPercent}%"></div>
-        </div>
-        <div class="time-info">
-          <span id="currentTime">${formatTime(progress)}</span>
-          <span id="duration">${formatTime(duration)}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-`;
+            <div class="np-card">
+              <img class="np-album" src="${data.item.album.images[0]?.url || ''}" alt="Cover">
+              <div class="np-info">
+                <div class="np-text">
+                  <h3 class="np-title">${data.item.name}</h3>
+                  <p class="np-artists">${artists}</p>
+                </div>
+                <div class="np-progress">
+                  <div class="progress-container">
+                    <div class="progress-bar" id="progressBar" style="width: ${progressPercent}%"></div>
+                  </div>
+                  <div class="time-info">
+                    <span id="currentTime">${formatTime(progress)}</span>
+                    <span id="duration">${formatTime(duration)}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          document.getElementById('playPauseBtn').innerHTML = `<i style="color: white" class="fas fa-pause"></i>`;
           setTimeout(updateCurrentlyPlaying, 750);
         } else {
-          currentlyPlayingSection.style.display = 'none';
+          isPlaying = false;
+          currentlyPlayingSection.style.display = 'block';
+          document.getElementById('playPauseBtn').innerHTML = `<i style="color: white" class="fas fa-play"></i>`;
           setTimeout(updateCurrentlyPlaying, 5000);
         }
       })
       .catch(() => {
-        currentlyPlayingSection.style.display = 'none';
+        isPlaying = false;
+        document.getElementById('playPauseBtn').innerHTML = `<i style="color: white" class="fas fa-play"></i>`;
+        currentlyPlayingSection.style.display = 'block';
         setTimeout(updateCurrentlyPlaying, 5000);
       });
   }
-
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  playPauseBtn.addEventListener('click', () => {
+    if (isPlaying) {
+      handleResponse(`/spotify/pause?access_token=${accessToken}`, 'PUT')
+        .catch(console.error);
+      isPlaying = false;
+      playPauseBtn.innerHTML = `<i style="color: white" class="fas fa-play"></i>`;
+    } else {
+      handleResponse(`/spotify/play?access_token=${accessToken}`, 'PUT')
+        .catch(console.error);
+      isPlaying = true;
+      playPauseBtn.innerHTML = `<i style="color: white" class="fas fa-pause"></i>`;
+    }
+  });
+  
   document.getElementById('nextBtn').addEventListener('click', () => {
     handleResponse(`/spotify/next?access_token=${accessToken}`, 'POST')
       .catch(console.error);
