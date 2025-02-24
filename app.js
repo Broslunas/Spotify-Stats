@@ -85,7 +85,59 @@ if (accessToken) {
       throw err;
     });
   };
-  
+
+  // --- Botón de Repetir ---
+  const repeatBtn = document.getElementById('repeatBtn');
+  const repeatLabel = document.getElementById('repeatLabel');
+  // Estados: 'off', 'context' (repetir todo) y 'track' (repetir pista)
+  let repeatMode = 'off';
+  repeatBtn.addEventListener('click', () => {
+    // Cicla entre los tres estados
+    if (repeatMode === 'off') {
+      repeatMode = 'context';
+    } else if (repeatMode === 'context') {
+      repeatMode = 'track';
+    } else {
+      repeatMode = 'off';
+    }
+    handleResponse(`/spotify/repeat?access_token=${accessToken}&state=${repeatMode}`, 'PUT')
+      .then(data => {
+        console.log("Modo de repetición ajustado:", repeatMode, data);
+        if (repeatMode === 'off') {
+          repeatBtn.innerHTML = `<i class="fas fa-redo" style="color: gray"></i>`;
+          repeatLabel.textContent = "Repetir off";
+          repeatLabel.style.color = "gray";
+        } else if (repeatMode === 'context') {
+          repeatBtn.innerHTML = `<i class="fas fa-redo" style="color: white"></i>`;
+          repeatLabel.textContent = "Repetir todo";
+          repeatLabel.style.color = "white";
+        } else if (repeatMode === 'track') {
+          repeatBtn.innerHTML = `<i class="fas fa-redo-alt" style="color: white"></i>`;
+          repeatLabel.textContent = "Repetir pista";
+          repeatLabel.style.color = "white";
+        }
+      })
+      .catch(err => console.error("Error ajustando el modo de repetición:", err));
+  });
+
+  // --- Botón de Aleatorio (Shuffle) ---
+  const shuffleBtn = document.getElementById('shuffleBtn');
+  let shuffleActive = false;
+  shuffleBtn.addEventListener('click', () => {
+    shuffleActive = !shuffleActive;
+    const state = shuffleActive ? 'true' : 'false';
+    handleResponse(`/spotify/shuffle?access_token=${accessToken}&state=${state}`, 'PUT')
+      .then(data => {
+        console.log("Modo aleatorio ajustado:", state, data);
+        if (shuffleActive) {
+          shuffleBtn.innerHTML = `<i class="fas fa-random" style="color: white"></i>`;
+        } else {
+          shuffleBtn.innerHTML = `<i class="fas fa-random" style="color: gray"></i>`;
+        }
+      })
+      .catch(err => console.error("Error ajustando el modo aleatorio:", err));
+  });
+
   let isPlaying = false;
 
   function formatTime(ms) {

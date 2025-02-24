@@ -34,9 +34,14 @@
     <h2 class="section-title">Ahora reproduciendo</h2>
     <div>
       <div class="now-playing-card" id="nowPlayingInfo"></div>
-      
       <div id="playbackControls" style="display: none;">
+        <div style="display: inline-flex; flex-direction: column; align-items: center;">
+        </div>
         <div id="playbackControls-2" style="text-align: center; margin: 1rem; gap: 10px;" class="np-card d-flex justify-content-center align-items-center">
+          <button id="repeatBtn" class="np-controls btn btn-icon">
+            <i class="fas fa-redo" style="color: gray"></i>
+          </button>
+          <small id="repeatLabel" style="color: gray; font-size: 0.8rem;">Repetir off</small>
           <button id="prevBtn" class="np-controls btn btn-icon">
             <i style="color: white" class="fas fa-step-backward"></i>
           </button>
@@ -46,9 +51,11 @@
           <button id="nextBtn" class="np-controls btn btn-icon">
             <i style="color: white" class="fas fa-step-forward"></i>
           </button>
+          <button id="shuffleBtn" class="np-controls btn btn-icon">
+            <i class="fas fa-random" style="color: gray"></i>
+          </button>
         </div>
-      </div>
-      
+      </div>      
     </div>
   </div>
 
