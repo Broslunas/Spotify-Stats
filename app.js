@@ -87,38 +87,37 @@ if (accessToken) {
   };
 
   // --- Botón de Repetir ---
-  const repeatBtn = document.getElementById('repeatBtn');
-  const repeatLabel = document.getElementById('repeatLabel');
-  // Estados: 'off', 'context' (repetir todo) y 'track' (repetir pista)
-  let repeatMode = 'off';
-  repeatBtn.addEventListener('click', () => {
-    // Cicla entre los tres estados
-    if (repeatMode === 'off') {
-      repeatMode = 'context';
-    } else if (repeatMode === 'context') {
-      repeatMode = 'track';
-    } else {
-      repeatMode = 'off';
-    }
-    handleResponse(`/spotify/repeat?access_token=${accessToken}&state=${repeatMode}`, 'PUT')
-      .then(data => {
-        console.log("Modo de repetición ajustado:", repeatMode, data);
-        if (repeatMode === 'off') {
-          repeatBtn.innerHTML = `<i class="fas fa-redo" style="color: gray"></i>`;
-          repeatLabel.textContent = "Repetir off";
-          repeatLabel.style.color = "gray";
-        } else if (repeatMode === 'context') {
-          repeatBtn.innerHTML = `<i class="fas fa-redo" style="color: white"></i>`;
-          repeatLabel.textContent = "Repetir todo";
-          repeatLabel.style.color = "white";
-        } else if (repeatMode === 'track') {
-          repeatBtn.innerHTML = `<i class="fas fa-redo-alt" style="color: white"></i>`;
-          repeatLabel.textContent = "Repetir pista";
-          repeatLabel.style.color = "white";
-        }
-      })
-      .catch(err => console.error("Error ajustando el modo de repetición:", err));
-  });
+const repeatBtn = document.getElementById('repeatBtn');
+// Estados: 'off', 'context' (repetir todo) y 'track' (repetir pista)
+let repeatMode = 'off';
+repeatBtn.addEventListener('click', () => {
+  // Cicla entre los tres estados
+  if (repeatMode === 'off') {
+    repeatMode = 'context';
+  } else if (repeatMode === 'context') {
+    repeatMode = 'track';
+  } else {
+    repeatMode = 'off';
+  }
+  
+  handleResponse(`/spotify/repeat?access_token=${accessToken}&state=${repeatMode}`, 'PUT')
+    .then(() => {
+      if (repeatMode === 'off') {
+        repeatBtn.innerHTML = `<i class="fas fa-redo" style="color: gray"></i>`;
+      } else if (repeatMode === 'context') {
+        repeatBtn.innerHTML = `<i class="fas fa-redo" style="color: white"></i>`;
+      } else if (repeatMode === 'track') {
+        repeatBtn.innerHTML = `
+          <div class="repeat-container">
+            <i class="fas fa-redo" style="color: white;"></i>
+            <span class="repeat-indicator">1</span>
+          </div>
+        `;
+      }
+    })
+    .catch(err => console.error("Error ajustando el modo de repetición:", err));
+});
+
 
   // --- Botón de Aleatorio (Shuffle) ---
   const shuffleBtn = document.getElementById('shuffleBtn');
