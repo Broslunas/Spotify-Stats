@@ -392,3 +392,41 @@ main {
   align-items: center;
   justify-content: center;
 }
+.playlist-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.playlist-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.playlist-card img {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.playlist-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 50%;
+  padding: 12px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.playlist-card:hover .playlist-play-btn {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}

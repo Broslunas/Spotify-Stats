@@ -44,6 +44,12 @@ const genresRightBtn = document.getElementById('genresRight');
 
 const PlaybackBtn = document.getElementById('playbackControls');
 
+const playlistsTitle = document.getElementById('playlistsTitle');
+const playlistsSlider = document.getElementById('playlistsSlider');
+const playlistsItems = document.getElementById('playlistsItems');
+const playlistsLeftBtn = document.getElementById('playlistsLeft');
+const playlistsRightBtn = document.getElementById('playlistsRight');
+
 logoutBtn.addEventListener('click', () => {
   window.location.href = '/';
 });
@@ -57,6 +63,8 @@ artistsLeftBtn.addEventListener('click', () => slide(artistsItems, -150));
 artistsRightBtn.addEventListener('click', () => slide(artistsItems, 150));
 genresLeftBtn.addEventListener('click', () => slide(genresItems, -150));
 genresRightBtn.addEventListener('click', () => slide(genresItems, 150));
+playlistsLeftBtn.addEventListener('click', () => slide(playlistsItems, -150));
+playlistsRightBtn.addEventListener('click', () => slide(playlistsItems, 150));
 
 if (accessToken) {
   loginDiv.style.display = 'none';
@@ -389,4 +397,78 @@ repeatBtn.addEventListener('click', () => {
       }
     })
     .catch(console.error);
+
+    fetch(`${API_BASE_URL}/spotify/recently-played?access_token=${accessToken}`)
+  .then(res => res.json())
+  .then(recentData => {
+    // Mapa para guardar la última reproducción (timestamp) de cada playlist
+    const playlistLastPlayed = {};
+    recentData.items.forEach(item => {
+      // Verifica que exista el campo context y que sea de tipo playlist
+      if (item.context && item.context.type === 'playlist' && item.context.uri) {
+        // El URI tiene el formato "spotify:playlist:<playlist_id>"
+        const parts = item.context.uri.split(':');
+        const playlistId = parts[2];
+        const playedAt = new Date(item.played_at).getTime();
+        // Si ya existe una marca para esta playlist, tomamos la más reciente
+        if (!playlistLastPlayed[playlistId] || playedAt > playlistLastPlayed[playlistId]) {
+          playlistLastPlayed[playlistId] = playedAt;
+        }
+      }
+    });
+
+    fetch(`${API_BASE_URL}/spotify/playlists?access_token=${accessToken}`)
+    .then(res => res.json())
+    .then(playlistData => {
+      let playlists = playlistData.items || [];
+      if (playlists.length) {
+        playlistsTitle.style.display = 'block';
+        playlistsSlider.style.display = 'block';
+        playlistsItems.innerHTML = '';
+        playlists.forEach(playlist => {
+          const div = document.createElement('div');
+          div.className = 'item';
+          // Generamos la card de la playlist con el botón de play oculto por defecto
+          div.innerHTML = `
+            <div class="playlist-card" data-context-uri="${playlist.uri}">
+              <a href="${playlist.external_urls.spotify}" target="_blank">
+                <img src="${(playlist.images && playlist.images.length) ? playlist.images[0].url : 'https://via.placeholder.com/150'}" alt="Playlist">
+              </a>
+              <div class="playlist-info">
+                <div class="title" title="${playlist.name}">${playlist.name}</div>
+              </div>
+              <button class="playlist-play-btn">
+                <i class="fas fa-play"></i>
+              </button>
+            </div>
+          `;
+          playlistsItems.appendChild(div);
+
+          // Aquí se agrega el listener para el botón de play de la playlist
+          const playBtn = div.querySelector('.playlist-play-btn');
+          playBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const contextUri = div.querySelector('.playlist-card').dataset.contextUri;
+            // Llamada a la API para reproducir la playlist.
+            fetch(`${API_BASE_URL}/spotify/play-playlist?access_token=${accessToken}&context_uri=${encodeURIComponent(contextUri)}`, {
+              method: 'PUT',
+              headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+              }
+            })
+            .then(res => res.json())
+            .then(data => {
+              console.log('Reproduciendo playlist:', data);
+              // Una vez iniciada la reproducción, se desplaza la vista a la sección "Ahora reproduciendo"
+              document.getElementById('currentlyPlayingSection').scrollIntoView({ behavior: 'smooth' });
+            })
+            .catch(err => console.error('Error reproduciendo playlist:', err));
+          });
+        });
+      }
+    })
+    .catch(err => console.error('Error al cargar playlists:', err));
+  })
 }
