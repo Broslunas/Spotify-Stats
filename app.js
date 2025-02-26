@@ -28,6 +28,7 @@ const genresTitle = document.getElementById('genresTitle');
 const genresSlider = document.getElementById('genresSlider');
 const genresItems = document.getElementById('genresItems');
 
+const recentList = document.getElementById('recentList');
 const recentPlayedTitle = document.getElementById('recentPlayedTitle');
 
 const verMasTopTracks = document.getElementById('verMasTopTracks');
@@ -42,7 +43,7 @@ const artistsRightBtn = document.getElementById('artistsRight');
 const genresLeftBtn = document.getElementById('genresLeft');
 const genresRightBtn = document.getElementById('genresRight');
 
-const PlaybackBtn = document.getElementById('playbackControls');
+const playbackControls = document.getElementById('playbackControls');
 
 const playlistsTitle = document.getElementById('playlistsTitle');
 const playlistsSlider = document.getElementById('playlistsSlider');
@@ -70,8 +71,6 @@ if (accessToken) {
   loginDiv.style.display = 'none';
   topBar.style.display = 'flex';
   timeRangeNote.style.display = 'block';
-
-  const playbackControls = document.getElementById('playbackControls');
   playbackControls.style.display = 'block';
 
   const handleResponse = (endpoint, method = 'PUT') => {
@@ -95,37 +94,34 @@ if (accessToken) {
   };
 
   // --- Botón de Repetir ---
-const repeatBtn = document.getElementById('repeatBtn');
-// Estados: 'off', 'context' (repetir todo) y 'track' (repetir pista)
-let repeatMode = 'off';
-repeatBtn.addEventListener('click', () => {
-  // Cicla entre los tres estados
-  if (repeatMode === 'off') {
-    repeatMode = 'context';
-  } else if (repeatMode === 'context') {
-    repeatMode = 'track';
-  } else {
-    repeatMode = 'off';
-  }
+  const repeatBtn = document.getElementById('repeatBtn');
+  let repeatMode = 'off';
+  repeatBtn.addEventListener('click', () => {
+    if (repeatMode === 'off') {
+      repeatMode = 'context';
+    } else if (repeatMode === 'context') {
+      repeatMode = 'track';
+    } else {
+      repeatMode = 'off';
+    }
   
-  handleResponse(`/spotify/repeat?access_token=${accessToken}&state=${repeatMode}`, 'PUT')
-    .then(() => {
-      if (repeatMode === 'off') {
-        repeatBtn.innerHTML = `<i class="fas fa-redo" style="color: gray"></i>`;
-      } else if (repeatMode === 'context') {
-        repeatBtn.innerHTML = `<i class="fas fa-redo" style="color: white"></i>`;
-      } else if (repeatMode === 'track') {
-        repeatBtn.innerHTML = `
-          <div class="repeat-container">
-            <i class="fas fa-redo" style="color: white;"></i>
-            <span class="repeat-indicator">1</span>
-          </div>
-        `;
-      }
-    })
-    .catch(err => console.error("Error ajustando el modo de repetición:", err));
-});
-
+    handleResponse(`/spotify/repeat?access_token=${accessToken}&state=${repeatMode}`, 'PUT')
+      .then(() => {
+        if (repeatMode === 'off') {
+          repeatBtn.innerHTML = `<i class="fas fa-redo" style="color: gray"></i>`;
+        } else if (repeatMode === 'context') {
+          repeatBtn.innerHTML = `<i class="fas fa-redo" style="color: white"></i>`;
+        } else if (repeatMode === 'track') {
+          repeatBtn.innerHTML = `
+            <div class="repeat-container">
+              <i class="fas fa-redo" style="color: white;"></i>
+              <span class="repeat-indicator">1</span>
+            </div>
+          `;
+        }
+      })
+      .catch(err => console.error("Error ajustando el modo de repetición:", err));
+  });
 
   // --- Botón de Aleatorio (Shuffle) ---
   const shuffleBtn = document.getElementById('shuffleBtn');
@@ -146,12 +142,12 @@ repeatBtn.addEventListener('click', () => {
   });
 
   let isPlaying = false;
-
   function formatTime(ms) {
     const minutes = Math.floor(ms / 60000);
     const seconds = ((ms % 60000) / 1000).toFixed(0);
     return `${minutes}:${seconds.padStart(2, '0')}`;
   }
+
   function updateCurrentlyPlaying() {
     fetch(`${API_BASE_URL}/spotify/currently-playing?access_token=${accessToken}`)
       .then(res => res.json())
@@ -160,7 +156,6 @@ repeatBtn.addEventListener('click', () => {
           isPlaying = true;
           currentlyPlayingSection.style.display = 'block';
           let artists = data.item.artists.map(artist => artist.name).join(' • ');
-          
           const progress = data.progress_ms || 0;
           const duration = data.item.duration_ms || 1;
           const progressPercent = (progress / duration * 100).toFixed(2);
@@ -201,6 +196,7 @@ repeatBtn.addEventListener('click', () => {
         setTimeout(updateCurrentlyPlaying, 2000);
       });
   }
+  
   const playPauseBtn = document.getElementById('playPauseBtn');
   playPauseBtn.addEventListener('click', () => {
     if (isPlaying) {
@@ -240,26 +236,23 @@ repeatBtn.addEventListener('click', () => {
       if (data.is_playing && data.item) {
         currentlyPlayingSection.style.display = 'block';
         let artists = data.item.artists.map(artist => artist.name).join(' • ');
-        
         const progress = data.progress_ms || 0;
         const duration = data.item.duration_ms || 1;
         const progressPercent = (progress / duration * 100).toFixed(2);
-
         nowPlayingInfo.innerHTML = `
-      <img src="${data.item.album.images[0]?.url || ''}" alt="Cover">
-      <div class="np-info">
-        <p style="margin: 0; font-weight: bold;">${data.item.name}</p>
-        <p style="margin: 0; color: #b3b3b3;">${artists}</p>
-        <div class="progress-container">
-          <div class="progress-bar" id="progressBar" style="width: ${progressPercent}%"></div>
-        </div>
-        <div class="time-info">
-          <span id="currentTime">${formatTime(progress)}</span>
-          <span id="duration">${formatTime(duration)}</span>
-        </div>
-      </div>
-    `;
-
+          <img src="${data.item.album.images[0]?.url || ''}" alt="Cover">
+          <div class="np-info">
+            <p style="margin: 0; font-weight: bold;">${data.item.name}</p>
+            <p style="margin: 0; color: #b3b3b3;">${artists}</p>
+            <div class="progress-container">
+              <div class="progress-bar" id="progressBar" style="width: ${progressPercent}%"></div>
+            </div>
+            <div class="time-info">
+              <span id="currentTime">${formatTime(progress)}</span>
+              <span id="duration">${formatTime(duration)}</span>
+            </div>
+          </div>
+        `;
         if (data.is_playing) {
           setTimeout(updateCurrentlyPlaying, 1000);
         }
@@ -337,7 +330,7 @@ repeatBtn.addEventListener('click', () => {
       if (recentTracks.length) {
         recentList.style.display = 'block';
         recentList.innerHTML = '';
-        document.getElementById('recentPlayedTitle').style.display = 'block';
+        recentPlayedTitle.style.display = 'block';
         recentTracks.forEach(item => {
           const track = item.track;
           const playedAt = new Date(item.played_at).toLocaleString();
@@ -365,59 +358,8 @@ repeatBtn.addEventListener('click', () => {
     })
     .catch(console.error);
 
-  fetch(`${API_BASE_URL}/spotify/top-artists?access_token=${accessToken}`)
-    .then(res => res.json())
-    .then(data => {
-      const artists = data.items || [];
-      if (artists.length) {
-        let genreCounts = {};
-        artists.forEach(artist => {
-          artist.genres.forEach(genre => {
-            genreCounts[genre] = (genreCounts[genre] || 0) + 1;
-          });
-        });
-        const sortedGenres = Object.keys(genreCounts).sort((a, b) => genreCounts[b] - genreCounts[a]);
-        if (sortedGenres.length) {
-          genresTitle.style.display = 'block';
-          genresSlider.style.display = 'block';
-          genresItems.innerHTML = '';
-          sortedGenres.slice(0, 20).forEach(genre => {
-            const div = document.createElement('div');
-            div.className = 'item no-img';
-            div.innerHTML = `<div title="${genre}">${genre}</div>`;
-            genresItems.appendChild(div);
-          });
-          if (sortedGenres.length > 20) {
-            verMasGenres.style.display = 'block';
-            verMasGenres.href = `/more/?type=genres&access_token=${accessToken}`;
-          } else {
-            verMasGenres.style.display = 'none';
-          }
-        }
-      }
-    })
-    .catch(console.error);
-
-    fetch(`${API_BASE_URL}/spotify/recently-played?access_token=${accessToken}`)
-  .then(res => res.json())
-  .then(recentData => {
-    // Mapa para guardar la última reproducción (timestamp) de cada playlist
-    const playlistLastPlayed = {};
-    recentData.items.forEach(item => {
-      // Verifica que exista el campo context y que sea de tipo playlist
-      if (item.context && item.context.type === 'playlist' && item.context.uri) {
-        // El URI tiene el formato "spotify:playlist:<playlist_id>"
-        const parts = item.context.uri.split(':');
-        const playlistId = parts[2];
-        const playedAt = new Date(item.played_at).getTime();
-        // Si ya existe una marca para esta playlist, tomamos la más reciente
-        if (!playlistLastPlayed[playlistId] || playedAt > playlistLastPlayed[playlistId]) {
-          playlistLastPlayed[playlistId] = playedAt;
-        }
-      }
-    });
-
-    fetch(`${API_BASE_URL}/spotify/playlists?access_token=${accessToken}`)
+  // --- Cargar playlists y redirigir al hacer click en la playlist ---
+  fetch(`${API_BASE_URL}/spotify/playlists?access_token=${accessToken}`)
     .then(res => res.json())
     .then(playlistData => {
       let playlists = playlistData.items || [];
@@ -428,47 +370,25 @@ repeatBtn.addEventListener('click', () => {
         playlists.forEach(playlist => {
           const div = document.createElement('div');
           div.className = 'item';
-          // Generamos la card de la playlist con el botón de play oculto por defecto
           div.innerHTML = `
             <div class="playlist-card" data-context-uri="${playlist.uri}">
-              <a href="${playlist.external_urls.spotify}" target="_blank">
-                <img src="${(playlist.images && playlist.images.length) ? playlist.images[0].url : 'https://via.placeholder.com/150'}" alt="Playlist">
-              </a>
+              <img src="${(playlist.images && playlist.images.length) ? playlist.images[0].url : 'https://via.placeholder.com/150'}" alt="Playlist">
               <div class="playlist-info">
                 <div class="title" title="${playlist.name}">${playlist.name}</div>
               </div>
-              <button class="playlist-play-btn">
-                <i class="fas fa-play"></i>
-              </button>
             </div>
           `;
           playlistsItems.appendChild(div);
-
-          // Aquí se agrega el listener para el botón de play de la playlist
-          const playBtn = div.querySelector('.playlist-play-btn');
-          playBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const contextUri = div.querySelector('.playlist-card').dataset.contextUri;
-            // Llamada a la API para reproducir la playlist.
-            fetch(`${API_BASE_URL}/spotify/play-playlist?access_token=${accessToken}&context_uri=${encodeURIComponent(contextUri)}`, {
-              method: 'PUT',
-              headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json'
-              }
-            })
-            .then(res => res.json())
-            .then(data => {
-              console.log('Reproduciendo playlist:', data);
-              // Una vez iniciada la reproducción, se desplaza la vista a la sección "Ahora reproduciendo"
-              document.getElementById('currentlyPlayingSection').scrollIntoView({ behavior: 'smooth' });
-            })
-            .catch(err => console.error('Error reproduciendo playlist:', err));
+          
+          // Extraer el playlist_id del URI (formato: spotify:playlist:<playlist_id>)
+          const contextUri = playlist.uri;
+          const parts = contextUri.split(':');
+          const playlistId = parts[2];
+          div.querySelector('.playlist-card').addEventListener('click', () => {
+            window.location.href = `/playlist/?playlist_id=${playlistId}&access_token=${accessToken}`;
           });
         });
       }
     })
     .catch(err => console.error('Error al cargar playlists:', err));
-  })
 }
