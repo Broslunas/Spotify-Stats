@@ -7,7 +7,7 @@
         --accent-color: #1db9b9;
 	}
 	* {
-	    transition: all 0.3s ease-in-out;
+		transition: all 0.3s ease-in-out;
 	}
 	body {
         background-color: var(--bg-primary);
