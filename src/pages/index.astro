@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+import Login from '../components/Login.astro';
+import Header from '../components/Header.astro';
+import CurrentlyPlaying from '../components/ui/CurrentlyPlaying.astro';
+import Playlists from '../components/ui/Playlists.astro';
+import TopPlayedTracks from '../components/ui/TopPlayedTracks.astro';
+import TopPlayedArtists from '../components/ui/TopPlayedArtists.astro';
+import TopPlayedGenres from '../components/ui/TopPlayedGenres.astro';
+import LatestPlayedTracks from '../components/ui/LatestPlayedTracks.astro';
+
+import Footer from '../components/Footer.astro';
+---
+
+<Layout>
+	<Login />
+	<Header />
+	
+	<div id="timeRangeNote" class="time-range-note">Datos de las últimas 4 semanas</div>
+	
+	<CurrentlyPlaying />
+	
+	<Playlists />
+	<TopPlayedTracks />
+	<TopPlayedArtists />
+	<TopPlayedGenres />
+	<LatestPlayedTracks />
+	
+	<Footer />
+</Layout>

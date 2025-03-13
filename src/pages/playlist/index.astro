@@ -1,0 +1,30 @@
+---
+import Layout from "../../layouts/Layout.astro"
+
+import MiniPlayer from "../../components/ui/MiniPlayer.astro"
+import Back from "../../components/ui/Back.astro"
+---
+<Layout>
+    <div id="playlistContainer">
+        <div id="playlistHeader">
+            <img id="playlistImage" src="" alt="Imagen de Playlist">
+            <div id="playlistInfo">
+                <h1 id="playlistName">Cargando Playlist...</h1>
+                <button class="play-button" id="playButton">Play</button>
+            </div>
+        </div>
+    
+        <p id="playlistDescription"></p>
+
+        <Back />
+
+        <div id="tracksContainer">
+            <h2>Canciones</h2>
+            <ul id="tracksList"></ul>
+        </div>
+    </div>
+
+    <MiniPlayer />
+
+    <script is:inline src="/playlistApp.js"></script>
+</Layout>

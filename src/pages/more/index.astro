@@ -1,0 +1,26 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+import Back from '../../components/ui/Back.astro';
+---
+<Layout>
+        <nav class="navbar navbar-dark">
+          <a class="navbar-brand" id="homeLink" href="#">Broslunas Stats</a>
+        </nav>
+        <Back />
+        <div class="container mt-3">
+          <h1 id="pageTitle"></h1>
+          <div id="itemsContainer" class="row"></div>
+        </div>
+      
+        <script is:inline src="/moreApp.js"></script>+
+      
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+        <style>
+            body { background-color: #121212; color: #fff; }
+            .card { background-color: #1e1e1e; border: none; }
+            .card-title, .card-text { color: #fff; }
+            .navbar { background-color: #181818; }
+        </style>
+</Layout>
